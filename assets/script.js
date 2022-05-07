@@ -1,183 +1,66 @@
+// global variables up here
+var generateBtn = document.querySelector("#generate");
+var lowcaseLet = 'abcdefghijklmnopqrsuvwxyz'
+var upcaseLet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+var numOpt = '0123456789'
+var specOpt = "!()*+,-./:;<=>?@[^_`{|}~"
 // User clicks button to generate password
 function generatePassword() {
+   // windowprompt presents prompt for password criteria selection
+  // Inputs to set choices for characters used. 1st length, 8-128 to ensure pass length reqs are met
 
-  // windowprompt presents prompt for password criteria selection
-  
-  alert ("Choose Password Generation Criteria")
-  
-  // User input is used to set choices for characters used, first length 8-128,
-  
-  var length = prompt ("Choose Password character length by typing a number 8-128")   
-  
-    console.log(length);
-
-  //  then selection of uppercase lowercase and special characters
-
-  var promptUpper = prompt
-
-    ('Would you like to INCLUDE or OMIT the use of uppercase characters? Enter "include" or "omit" to choose.');
- 
-      console.log(promptUpper)
- 
-  // validate prompt answer
- 
-  if (promptUpper === "" || promptUpper === null) {
- 
-     alert("Please try again");
- 
-      return generatePassword();
- 
-  }
- 
-  promptUpper = promptUpper.toLowerCase();
- 
-  if (promptUpper === "omit") {
- 
-    // confirm user wants to omit Upper Case Characters
- 
-    var confirmOmit = confirm("Are you sure you'd like to omit uppercase?");
-
-    // if yes (true), omit uppercase characters
- 
-    if (confirmOmit) {
- 
-      alert("Your password will omit uppercase characters");
-   
-    }
-  
-  }
-
-  var promptLower = prompt
-
-    ('Would you like to INCLUDE or OMIT the use of lowercase characters? Enter "include" or "omit" to choose.');
- 
-      console.log(promptLower)
- 
-  // validate prompt answer
- 
-  if (promptLower === "" || promptLower === null) {
- 
-     alert("Please try again.");
- 
-      return generatePassword();
- 
-  }
- 
-  promptLower = promptLower.toLowerCase();
- 
-  if (promptLower === "omit") {
- 
-    // confirm user wants to omit Upper Case Characters
- 
-    var confirmOmit = confirm("Are you sure you'd like to omit lowercase?");
-
-    // if yes (true), omit uppercase characters
- 
-    if (confirmOmit) {
- 
-      alert("Your password will omit lowercase characters");
-   
-    }
-  
-  }
-  
-  var promptSpecial = prompt
-  
-  ('Would you like to INCLUDE or OMIT the use of special characters? Enter "include" or "omit" to choose.');
-  
-  console.log(promptSpecial)
-  
-  // validate prompt answer
-  
-  if (promptSpecial === "" || promptSpecial === null) {
-    
-    alert("Please try again.");
-    
+  var length = prompt('Select password length 8-128')
+  if (length === "" || length === null) {
+    alert("Not an acceptable answer. Please try again and re-enter selection as explained in prompt.");
     return generatePassword();
-    
-  }
-  
-  promptSpecial = promptSpecial.toLowerCase();
-  
-  if (promptSpecial === "omit") {
-    
-    // confirm user wants to omit Upper Case Characters
-    
-    var confirmOmit = confirm("Are you sure you'd like to omit special characters?");
-    
-    // if yes (true), omit uppercase characters
-    
-    if (confirmOmit) {
-      
-      alert("Your password will omit special characters");
-      
-    }
-    
-  }
 
-  var promptNumbers = prompt
-  
-  ('Would you like to INCLUDE or OMIT the use of numerical characters? Enter "include" or "omit" to choose.');
-  
-  console.log(promptNumbers)
-  
-  // validate prompt answer
-  
-  if (promptNumbers === "" || promptNumbers === null) {
+ }
+ length = parseInt(length);
+ if ((length) < 8 || length > 128) {
+   alert ('Password length must be between 8 & 128 characters!')
+   return''
+ }
+ 
+  var validCharacters = '';
+  var specialChars = confirm ('Do you want Special Characters?')
+  var numbers = confirm ('Do you want to use Numbers?')
+  var lowercase = confirm('Do you want Lowercase Characters?')
+  var uppercase = confirm ('Do you want to use Uppercase Characters?')
     
-    alert("Please try again.");
-    
-    return generatePassword();
-  }
-  
-  promptNumbers = promptNumbers.toLowerCase();
-  
-  if (promptNumbers === "omit") {
-    
-    // confirm user wants to omit Upper Case Characters
-    
-    var confirmOmit = confirm("Are you sure you'd like to omit numerical characters?");
-    
-    // if yes (true), omit numerical characters
-    
-    if (confirmOmit) {
-      
-      alert("Your password will omit numbers");
-      
-    }
-    
-  }
-  
-  //if var yes, add 1 to counter 
-  
-  
-  
-  // then validate user selection and ensure at least one type of each user prompted character is selected
-function validatePassword() {
-  var password = 
-  // if counter is more than one we good homie
-
+if (!specialChars && !lowercase && !uppercase && !numbers) {
+  alert('Page cannot generate a password with no options selected. Try again.');
+  return generatePassword();
 }
-  
-};
-  
-  
-  // ?*if counter is still 0 return to gen pass and start over*
-// gen password based on user criteria
-
-// display or window prompt new password
-
-// Get references to the #generate element
+  // then validate user selection and ensure at least one type of each user prompted character is selected
+if  (specialChars) {
+  validCharacters += specOpt;
+} 
+if  (lowcaseLet) {
+  validCharacters += lowcaseLet;
+}  
+if  (upcaseLet) {
+validCharacters += upcaseLet;
+}  
+if  (numOpt) {
+validCharacters += numOpt;
+} 
+// for length of password find random character from validCharaters and add that to build one
+var password ='';
+for (let i=0; i < length; i++) {
+var randomNumber = Math.floor(Math.random()* validCharacters.length);
+  password += validCharacters.charAt(randomNumber);
+}
+return password;
+}
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
+
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-
 }
-
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
